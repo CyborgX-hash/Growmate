@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite" // In production with MySQL, change to "mysql" and DATABASE_URL="mysql://..."
+  url      = env("DATABASE_URL")
+}
+
+model Garden {
+  id              String       @id @default(uuid())
+  guestId         String       @default("guest-default")
+  name            String       @default("My Green Sanctuary")
+  location        String?
+  gardenType      String       @default("balcony") // balcony, indoor, terrace, outdoor
+  spaceSize       String       @default("Small Balcony (approx. 2x1m)")
+  sunlightHours   Int          @default(4)
+  soilType        String?      @default("Potting Mix")
+  experienceLevel String       @default("beginner") // beginner, intermediate, advanced
+  interests       String       @default("herbs,vegetables") // comma-separated or json string
+  climate         String?      @default("Temperate")
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  plants          Plant[]
+  careTasks       CareTask[]
+  missions        Mission[]
+  plans           GardenPlan[]
+  diagnoses       Diagnosis[]
+
+  @@index([guestId])
+}
+
+model Plant {
+  id               String       @id @default(uuid())
+  gardenId         String
+  garden           Garden       @relation(fields: [gardenId], references: [id], onDelete: Cascade)
+  name             String
+  species          String?
+  variety          String?
+  plantedAt        DateTime     @default(now())
+  sunlightReq      String?      @default("4-6 hours direct sunlight")
+  wateringFreqDays Int          @default(2)
+  lastWateredAt    DateTime?
+  notes            String?
+  imageUrl         String?
+  status           String       @default("healthy") // healthy, needs_care, blooming, harvested
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  careTasks        CareTask[]
+  diagnoses        Diagnosis[]
+
+  @@index([gardenId])
+}
+
+model CareTask {
+  id          String    @id @default(uuid())
+  gardenId    String
+  garden      Garden    @relation(fields: [gardenId], references: [id], onDelete: Cascade)
+  plantId     String?
+  plant       Plant?    @relation(fields: [plantId], references: [id], onDelete: SetNull)
+  title       String
+  taskType    String    @default("general") // watering, pruning, fertilizing, repotting, pest_check, general
+  dueDate     DateTime
+  isCompleted Boolean   @default(false)
+  completedAt DateTime?
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([gardenId])
+  @@index([plantId])
+  @@index([dueDate])
+}
+
+model Mission {
+  id                 String    @id @default(uuid())
+  gardenId           String
+  garden             Garden    @relation(fields: [gardenId], references: [id], onDelete: Cascade)
+  missionDate        String    // Format: YYYY-MM-DD for deterministic single daily mission
+  title              String
+  explanation        String
+  durationMinutes    Int       @default(10)
+  materialsRequired  String    // JSON array of strings
+  steps              String    // JSON array of strings
+  plantId            String?
+  isCompleted        Boolean   @default(false)
+  completedAt        DateTime?
+  completionNote     String?
+  completionPhoto    String?   // Base64 or URL
+  isFallback         Boolean   @default(false)
+  modelAttribution   String    @default("Google Gemma 3 4B IT")
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@unique([gardenId, missionDate])
+  @@index([gardenId])
+}
+
+model Diagnosis {
+  id                    String    @id @default(uuid())
+  gardenId              String?
+  garden                Garden?   @relation(fields: [gardenId], references: [id], onDelete: SetNull)
+  plantId               String?
+  plant                 Plant?    @relation(fields: [plantId], references: [id], onDelete: SetNull)
+  imageUrl              String?
+  predictedClass        String
+  confidenceScore       Float?
+  plainExplanation      String
+  cautiousNextSteps     String    // JSON array of strings
+  supportedClassesCount Int       @default(38)
+  isSimulatedFallback   Boolean   @default(false)
+  rawInferenceData      String?
+  createdAt             DateTime  @default(now())
+
+  @@index([gardenId])
+  @@index([plantId])
+}
+
+model GardenPlan {
+  id               String    @id @default(uuid())
+  gardenId         String
+  garden           Garden    @relation(fields: [gardenId], references: [id], onDelete: Cascade)
+  rawPrompt        String?
+  planJson         String    // Structured JSON with plant recommendations and care timeline
+  isFallback       Boolean   @default(false)
+  modelAttribution String    @default("Google Gemma 3 4B IT")
+  createdAt        DateTime  @default(now())
+
+  @@index([gardenId])
+}
