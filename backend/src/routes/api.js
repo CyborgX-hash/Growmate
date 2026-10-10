@@ -53,6 +53,7 @@ router.post("/garden/plan/adopt", adoptPlanPlants);
 
 // Plant Health Leaf Scanner (PlantVillage ViT)
 router.post("/plants/diagnose", aiLimiter, upload.single("image"), diagnoseLeafImage);
+router.post("/diagnose", aiLimiter, upload.single("image"), diagnoseLeafImage);
 router.post("/plants/:id/diagnose", aiLimiter, (req, res, next) => {
   req.body.plantId = req.params.id;
   next();

@@ -15,8 +15,16 @@ export async function diagnoseLeafImage(req, res, next) {
 
     const garden = await prisma.garden.findFirst({ where: { guestId } });
 
-    // Run PlantVillage ViT inference
-    const result = await classifyPlantLeaf(req.file.buffer, req.file.mimetype);
+    let cropHint = null;
+    if (plantId) {
+      const plant = await prisma.plant.findUnique({ where: { id: plantId } });
+      if (plant) {
+        cropHint = `${plant.name} ${plant.species || ""}`;
+      }
+    }
+
+    // Run PlantVillage ViT inference (with automatic graceful fallback)
+    const result = await classifyPlantLeaf(req.file.buffer, req.file.mimetype, cropHint);
 
     // Save diagnosis record
     const diagnosis = await prisma.diagnosis.create({
@@ -56,6 +64,8 @@ export async function diagnoseLeafImage(req, res, next) {
         supportedClassesCount: result.supportedClassesCount,
         disclaimer: result.disclaimer,
         modelAttribution: result.modelAttribution,
+        isSimulatedFallback: result.isSimulatedFallback || false,
+        fallbackNotice: result.fallbackNotice || null,
         createdAt: diagnosis.createdAt
       }
     });

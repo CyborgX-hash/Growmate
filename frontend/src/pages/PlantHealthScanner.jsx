@@ -301,6 +301,13 @@ export default function PlantHealthScanner() {
                 </div>
               </div>
 
+              {diagnosisResult.isSimulatedFallback && (
+                <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center justify-between gap-2">
+                  <span className="font-semibold">🌿 Offline / Rule-Engine Fallback Active</span>
+                  <span className="text-[11px] opacity-80">{diagnosisResult.modelAttribution}</span>
+                </div>
+              )}
+
               {/* Confidence & Model details */}
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="p-3 bg-[#FCFBF7] rounded-xl border border-[#E4E0CE]">

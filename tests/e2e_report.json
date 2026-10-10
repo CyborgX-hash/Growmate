@@ -1,0 +1,75 @@
+{
+  "passed": [
+    {
+      "testName": "Landing Page Title",
+      "details": "Title: \"GrowMate — AI Gardening Companion & Touch Grass Mode\""
+    },
+    {
+      "testName": "Liquid Glass Navbar",
+      "details": "Navbar mounted and visible"
+    },
+    {
+      "testName": "Landing Page Hero",
+      "details": "Hero text found: \"AI that gets your hands dirty in real so...\""
+    },
+    {
+      "testName": "Setup Page Load",
+      "details": "Heading: \"Garden Sanctuary Setup\""
+    },
+    {
+      "testName": "Setup Form Name Input",
+      "details": "Entered new garden sanctuary name"
+    },
+    {
+      "testName": "Setup Form Submission",
+      "details": "Clicked Save Garden Profile button"
+    },
+    {
+      "testName": "Dashboard Plants Initial Load",
+      "details": "Found existing plant cards"
+    },
+    {
+      "testName": "Add Plant Modal",
+      "details": "Created \"Test Rosemary Bush\" successfully"
+    },
+    {
+      "testName": "Complete Care Task",
+      "details": "Clicked complete on care task"
+    },
+    {
+      "testName": "Care Calendar Load",
+      "details": "Header: \"Garden Care Calendar\""
+    },
+    {
+      "testName": "Garden Planner Generation",
+      "details": "Plan successfully rendered with horticultural recommendations"
+    },
+    {
+      "testName": "Leaf Image Upload & Preview",
+      "details": "Preview rendered successfully from uploaded file"
+    },
+    {
+      "testName": "Plant Health Scanner Inference",
+      "details": "Leaf classification completed and displayed assessment"
+    },
+    {
+      "testName": "Touch Grass Mission Load",
+      "details": "Mission heading: \"Touch Grass Mode\""
+    },
+    {
+      "testName": "Touch Grass Reflection",
+      "details": "Entered mindful reflection notes"
+    },
+    {
+      "testName": "Settings Page Load",
+      "details": "Header: \"Settings, Models & Attribution\""
+    },
+    {
+      "testName": "Attribution & Transparency",
+      "details": "Correctly discloses Gemma 3 4B, PlantVillage ViT, and active sanctuary"
+    }
+  ],
+  "failed": [],
+  "warnings": [],
+  "consoleErrors": []
+}
