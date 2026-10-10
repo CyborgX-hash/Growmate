@@ -29,6 +29,20 @@ venv/
 .venv/
 .pytest_cache/
 
+# Tests & Test Artifacts
+tests/
+test/
+*.test.js
+*.spec.js
+*.test.ts
+*.spec.ts
+e2e_screenshots/
+__tests__/
+
+# Markdown Files (except README.md)
+*.md
+!README.md
+
 # OS & IDE
 .DS_Store
 Thumbs.db
