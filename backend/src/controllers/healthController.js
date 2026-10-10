@@ -26,7 +26,11 @@ export async function getHealthStatus(req, res) {
     database: {
       status: dbStatus,
       latencyMs: dbLatencyMs,
-      provider: process.env.DATABASE_URL?.startsWith("file:") ? "SQLite (Local Dev)" : "MySQL (Hosted)"
+      provider: process.env.DATABASE_URL?.startsWith("file:")
+        ? "SQLite (Local Dev)"
+        : process.env.DATABASE_URL?.includes("postgres")
+        ? "PostgreSQL (Prisma Cloud / Hosted)"
+        : "MySQL (Hosted)"
     },
     aiEndpoints: {
       gemma: {
