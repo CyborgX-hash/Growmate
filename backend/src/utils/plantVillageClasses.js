@@ -403,11 +403,18 @@ export const SUPPORTED_PLANTS_LIST = [
   "Marigold (Tagetes)", "Sweet Basil", "Mint", "Rosemary", "Lavender"
 ];
 
+export const FLOWER_VARIETIES_LIST = [
+  "Marigold (Tagetes)", "Garden Rose (Rosa)", "Sunflower (Helianthus)",
+  "Petunia", "Hibiscus", "Gerbera Daisy", "Zinnia", "Dahlia",
+  "Jasmine", "Orchid", "Bougainvillea", "Sweet Alyssum", "Lavender"
+];
+
 export const COMPANION_AND_HERB_PLANTS = {
   "marigold": {
     crop: "Marigold (Tagetes)",
     disease: "Floral & Foliage Assessment",
     isHealthy: true,
+    category: "flower",
     explanation: "Marigold is an exceptional companion flower and natural pest deterrent (buffering against root-knot nematodes, aphids, and beetles). Bloom and foliage tissue appears vibrant and active.",
     nextSteps: [
       "Deadhead fading or dried flower blossoms regularly to encourage continuous, vigorous flower buds.",
@@ -420,6 +427,7 @@ export const COMPANION_AND_HERB_PLANTS = {
     crop: "Marigold (Tagetes)",
     disease: "Floral & Foliage Assessment",
     isHealthy: true,
+    category: "flower",
     explanation: "Marigold is an exceptional companion flower and natural pest deterrent (buffering against root-knot nematodes, aphids, and beetles). Bloom and foliage tissue appears vibrant and active.",
     nextSteps: [
       "Deadhead fading or dried flower blossoms regularly to encourage continuous, vigorous flower buds.",
@@ -428,10 +436,150 @@ export const COMPANION_AND_HERB_PLANTS = {
       "Plant alongside tomatoes, peppers, or eggplants as a beneficial companion flower for natural garden defense."
     ]
   },
+  "rose": {
+    crop: "Garden Rose (Rosa)",
+    disease: "Bloom & Foliage Assessment",
+    isHealthy: true,
+    category: "flower",
+    explanation: "Perennial flowering shrub prized for aromatic blossoms. Foliage displays healthy vein structure without active black spot (Diplocarpon rosae) or powdery mildew.",
+    nextSteps: [
+      "Prune spent blooms at a 45-degree angle 1/4 inch above an outward-facing 5-leaflet leaf set.",
+      "Water thoroughly at the base around the drip line; do not wet canes and leaves late in the evening.",
+      "Ensure ample airflow around the shrub and 6+ hours of direct sunlight to prevent black spot fungal spores.",
+      "Mulch base with compost or organic bark to retain even soil moisture and moderate root temperature."
+    ]
+  },
+  "sunflower": {
+    crop: "Sunflower (Helianthus annuus)",
+    disease: "Floral Stalk & Bloom Assessment",
+    isHealthy: true,
+    category: "flower",
+    explanation: "Fast-growing annual composite with heavy, vibrant yellow or bronze bloom heads. Stems and ray petals indicate strong solar tracking (heliotropism) and vigor.",
+    nextSteps: [
+      "Provide stake or bamboo support for large bloom varieties, especially in wind-exposed balconies.",
+      "Needs 8+ hours of direct overhead sunlight and deep, infrequent watering as the taproot develops.",
+      "Attracts bees and beneficial pollinators to nearby fruiting vegetables.",
+      "Leave fading seed heads intact late in the season to feed urban songbirds and harvest seeds."
+    ]
+  },
+  "petunia": {
+    crop: "Petunia (Petunia x hybrida)",
+    disease: "Trumpet Bloom Assessment",
+    isHealthy: true,
+    category: "flower",
+    explanation: "Prolific cascading flowering annual ideal for balcony railings, hanging baskets, and window boxes.",
+    nextSteps: [
+      "Pinch off fading flower blossoms down to the stem base to avoid sticky seed pod formation and boost fresh flowers.",
+      "Feed with diluted potassium-rich organic fertilizer every two weeks during high blooming periods.",
+      "Water when the top inch of potting soil feels dry; avoid soil waterlogging.",
+      "Trim leggy mid-season stems back by 1/3 to stimulate a second flush of compact branching."
+    ]
+  },
+  "hibiscus": {
+    crop: "Hibiscus (Hibiscus rosa-sinensis)",
+    disease: "Tropical Bloom Assessment",
+    isHealthy: true,
+    category: "flower",
+    explanation: "Showy tropical or hardy perennial flower with prominent staminal columns and deep green glossy leaves.",
+    nextSteps: [
+      "Keep soil evenly moist with high organic matter; dropping unopened buds usually indicates uneven watering or dry air.",
+      "Provide 6+ hours of bright sunlight and protect from drafts or temperatures below 10°C (50°F).",
+      "Inspect inner bud clusters for aphids or mealybugs.",
+      "Feed with a balanced fertilizer low in phosphorus to maintain rich petal color."
+    ]
+  },
+  "daisy": {
+    crop: "Gerbera / Garden Daisy",
+    disease: "Composite Floral Assessment",
+    isHealthy: true,
+    category: "flower",
+    explanation: "Cheerful composite bloom with distinct central disc florets and clean perimeter ray petals.",
+    nextSteps: [
+      "Ensure crown of the plant is set just above soil level to avoid crown rot fungal pathogens.",
+      "Water from the bottom or soil base in morning light.",
+      "Snip off old flower stems close to the base when petals wither.",
+      "Provide bright, indirect to direct morning sunlight."
+    ]
+  },
+  "zinnia": {
+    crop: "Zinnia (Zinnia elegans)",
+    disease: "Warm-Season Bloom Assessment",
+    isHealthy: true,
+    category: "flower",
+    explanation: "Resilient warm-season annual flower with vibrant multi-layered petals and strong pollinator appeal.",
+    nextSteps: [
+      "Allow wide spacing between plants for breeze circulation to prevent powdery mildew on lower leaves.",
+      "Deadhead regularly by clipping stems back to a branch node.",
+      "Thrives in hot, full sun with moderate, well-drained soil moisture."
+    ]
+  },
+  "dahlia": {
+    crop: "Dahlia (Dahlia pinnata)",
+    disease: "Tuberous Floral Assessment",
+    isHealthy: true,
+    category: "flower",
+    explanation: "Architectural tuberous flowering perennial with intricate symmetrical petal arrangements.",
+    nextSteps: [
+      "Stake taller varieties early to avoid heavy stems breaking in rain or wind.",
+      "Pinch center growing tip when 12 inches tall for bushier flowering branching.",
+      "Watch for slugs and earwigs around young flower buds.",
+      "Maintain consistently moist, organically rich container soil."
+    ]
+  },
+  "jasmine": {
+    crop: "Jasmine (Jasminum)",
+    disease: "Vine & Fragrance Assessment",
+    isHealthy: true,
+    category: "flower",
+    explanation: "Fragrant star-shaped white or yellow blossoms on twining stems. Highly rewarding for vertical balconies.",
+    nextSteps: [
+      "Provide a trellis, wire, or railing for vines to climb upward.",
+      "Prune immediately after flowering to shape vine growth and stimulate new flowering wood.",
+      "Keep in bright, sunny position with moist but well-drained soil."
+    ]
+  },
+  "orchid": {
+    crop: "Orchid (Orchidaceae)",
+    disease: "Epiphytic Bloom Assessment",
+    isHealthy: true,
+    category: "flower",
+    explanation: "Specialized epiphytic flower with long-lasting floral spikes and velamen-coated aerial roots.",
+    nextSteps: [
+      "Never plant in garden soil; use aerated pine bark, perlite, and sphagnum moss potting medium.",
+      "Water by soaking bark thoroughly once a week and allowing all excess water to drain completely.",
+      "Provide bright, filtered indirect sunlight; direct hot sun will scorch leaves.",
+      "Do not cut flower spike until it turns completely brown."
+    ]
+  },
+  "bougainvillea": {
+    crop: "Bougainvillea",
+    disease: "Bract & Bloom Assessment",
+    isHealthy: true,
+    category: "flower",
+    explanation: "Hardy tropical climber known for spectacular paper-thin colorful floral bracts.",
+    nextSteps: [
+      "Requires maximum direct sunlight (6-8+ hours) to produce vibrant bract color.",
+      "Allow soil to dry out between waterings; bougainvillea blooms most heavily when slightly stressed for water.",
+      "Prune aggressively after each bloom cycle to encourage dense new shoots."
+    ]
+  },
+  "alyssum": {
+    crop: "Sweet Alyssum (Lobularia maritima)",
+    disease: "Pollinator Groundcover Assessment",
+    isHealthy: true,
+    category: "flower",
+    explanation: "Honey-scented micro-blooms that form a carpet of white or purple flowers, attracting beneficial syrphid hoverflies.",
+    nextSteps: [
+      "Plant in container borders around tomatoes and greens for natural biological pest control against aphids.",
+      "Shear back by half mid-season if plants become leggy to stimulate fresh blooms.",
+      "Keep moderately moist in partial to full sun."
+    ]
+  },
   "basil": {
     crop: "Sweet Basil (Ocimum basilicum)",
     disease: "Herb Foliage Assessment",
     isHealthy: true,
+    category: "herb",
     explanation: "Fragrant culinary herb foliage. Leaves appear tender with active aromatic essential oils.",
     nextSteps: [
       "Pinch off emerging flower spikes at the stem junction to keep foliage tender, flavorful, and sweet.",
@@ -443,6 +591,7 @@ export const COMPANION_AND_HERB_PLANTS = {
     crop: "Mint (Mentha)",
     disease: "Herb Foliage Assessment",
     isHealthy: true,
+    category: "herb",
     explanation: "Fast-growing aromatic perennial herb with vigorous stolons (runners) and aromatic serrated leaves.",
     nextSteps: [
       "Grow in dedicated pots to prevent vigorous underground rhizomes from competing with other garden plants.",
@@ -454,6 +603,7 @@ export const COMPANION_AND_HERB_PLANTS = {
     crop: "Rosemary (Salvia rosmarinus)",
     disease: "Herb Foliage Assessment",
     isHealthy: true,
+    category: "herb",
     explanation: "Woody Mediterranean perennial adapted to rocky, well-draining soils and high direct sunlight.",
     nextSteps: [
       "Let potting soil dry out between waterings; rosemary roots rot easily in waterlogged soil.",
@@ -464,10 +614,47 @@ export const COMPANION_AND_HERB_PLANTS = {
     crop: "Lavender (Lavandula)",
     disease: "Herb & Bloom Assessment",
     isHealthy: true,
+    category: "flower",
     explanation: "Aromatic drought-tolerant perennial requiring low humidity and high sun exposure.",
     nextSteps: [
       "Do not over-water or over-fertilize; requires excellent drainage with sand or perlite.",
       "Prune lightly after the main flowering flush to maintain shape."
+    ]
+  },
+  "thyme": {
+    crop: "Thyme (Thymus vulgaris)",
+    disease: "Herb Foliage Assessment",
+    isHealthy: true,
+    category: "herb",
+    explanation: "Compact creeping woody herb with aromatic micro-leaves adapted to sunny containers.",
+    nextSteps: [
+      "Allow soil to dry between waterings; thrives in well-aerated potting soil.",
+      "Trim back woody stems in spring to stimulate fresh, tender herbal growth.",
+      "Needs 6+ hours of direct sunlight."
+    ]
+  },
+  "oregano": {
+    crop: "Oregano (Origanum vulgare)",
+    disease: "Herb Foliage Assessment",
+    isHealthy: true,
+    category: "herb",
+    explanation: "Pungent culinary perennial herb that thrives in Mediterranean container conditions.",
+    nextSteps: [
+      "Pinch back stem tips as flowers begin to form to concentrate pungent essential oils in foliage.",
+      "Water only when the surface feels dry; highly drought-resilient.",
+      "Provide 6+ hours of sunlight."
+    ]
+  },
+  "chives": {
+    crop: "Chives (Allium schoenoprasum)",
+    disease: "Herb & Edible Bloom Assessment",
+    isHealthy: true,
+    category: "herb",
+    explanation: "Slender hollow allium foliage with lavender edible pom-pom flower heads.",
+    nextSteps: [
+      "Snip outer leaves 1-2 inches above soil level; plants regenerate quickly.",
+      "Enjoy the edible purple blooms in salads or deadhead them to promote leaf density.",
+      "Maintain moist, organically rich container soil in full sun or partial shade."
     ]
   }
 };
@@ -483,6 +670,7 @@ export function getCompanionOrCustomPlantDiagnosis(plantName = null, confidenceS
         return {
           predictedClass: `${companionInfo.crop.replace(/[^a-zA-Z0-9]/g, '_')}___healthy`,
           crop: companionInfo.crop,
+          category: companionInfo.category || "flower",
           disease: companionInfo.disease,
           isHealthy: companionInfo.isHealthy,
           confidenceScore,

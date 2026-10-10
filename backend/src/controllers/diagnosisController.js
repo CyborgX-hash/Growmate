@@ -14,8 +14,10 @@ export async function diagnoseLeafImage(req, res, next) {
     }
 
     const garden = await prisma.garden.findFirst({ where: { guestId } });
+    const scanMode = req.body.scanMode || "leaf_health";
+    const manualCropHint = req.body.crop || req.body.plantName || null;
 
-    let cropHint = null;
+    let cropHint = manualCropHint;
     if (plantId) {
       const plant = await prisma.plant.findUnique({ where: { id: plantId } });
       if (plant) {
@@ -23,8 +25,8 @@ export async function diagnoseLeafImage(req, res, next) {
       }
     }
 
-    // Run PlantVillage ViT inference (with automatic graceful fallback)
-    const result = await classifyPlantLeaf(req.file.buffer, req.file.mimetype, cropHint);
+    // Run PlantVision / Flower inference
+    const result = await classifyPlantLeaf(req.file.buffer, req.file.mimetype, cropHint, scanMode);
 
     // Save diagnosis record
     const diagnosis = await prisma.diagnosis.create({
@@ -56,6 +58,7 @@ export async function diagnoseLeafImage(req, res, next) {
         id: diagnosis.id,
         predictedClass: result.predictedClass,
         crop: result.crop,
+        category: result.category || (scanMode === "flower_identify" ? "flower" : "foliage"),
         disease: result.disease,
         isHealthy: result.isHealthy,
         confidenceScore: result.confidenceScore,
@@ -66,6 +69,7 @@ export async function diagnoseLeafImage(req, res, next) {
         modelAttribution: result.modelAttribution,
         isSimulatedFallback: result.isSimulatedFallback || false,
         fallbackNotice: result.fallbackNotice || null,
+        scanMode,
         createdAt: diagnosis.createdAt
       }
     });

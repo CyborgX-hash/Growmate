@@ -80,8 +80,9 @@ export function getFallbackDiagnosis(cropHint = null, reason = "") {
  * @param {Buffer} imageBuffer - Raw image buffer (JPEG/PNG/WebP)
  * @param {string} mimeType - MIME type of uploaded file
  * @param {string|null} cropHint - Optional plant name/species hint
+ * @param {string} scanMode - "leaf_health" or "flower_identify"
  */
-export async function classifyPlantLeaf(imageBuffer, mimeType = "image/jpeg", cropHint = null) {
+export async function classifyPlantLeaf(imageBuffer, mimeType = "image/jpeg", cropHint = null, scanMode = "leaf_health") {
   if (!imageBuffer || imageBuffer.length === 0) {
     throw new Error("EMPTY_IMAGE: No image data provided for classification.");
   }
@@ -89,6 +90,11 @@ export async function classifyPlantLeaf(imageBuffer, mimeType = "image/jpeg", cr
   // Maximum 10MB check
   if (imageBuffer.length > 10 * 1024 * 1024) {
     throw new Error("IMAGE_TOO_LARGE: Image exceeds maximum allowed size of 10MB.");
+  }
+
+  // If in dedicated Flower / Companion identifier mode:
+  if (scanMode === "flower_identify") {
+    return getFallbackDiagnosis(cropHint, "Flower & companion plant botanical identification");
   }
 
   // Out-of-Distribution Protection:

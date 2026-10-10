@@ -11,7 +11,8 @@ import {
   Info, 
   Leaf,
   Plus,
-  ArrowRight
+  ArrowRight,
+  Sparkles
 } from "lucide-react";
 import { api } from "../services/api.js";
 import { useGarden } from "../context/GardenContext.jsx";
@@ -22,6 +23,7 @@ export default function PlantHealthScanner() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [selectedPlantId, setSelectedPlantId] = useState("");
+  const [scanMode, setScanMode] = useState("leaf_health"); // "leaf_health" | "flower_identify"
   const [scanning, setScanning] = useState(false);
   const [diagnosisResult, setDiagnosisResult] = useState(null);
   const [error, setError] = useState(null);
@@ -76,6 +78,7 @@ export default function PlantHealthScanner() {
 
     const formData = new FormData();
     formData.append("image", selectedFile);
+    formData.append("scanMode", scanMode);
     if (selectedPlantId) {
       formData.append("plantId", selectedPlantId);
     }
@@ -84,7 +87,12 @@ export default function PlantHealthScanner() {
       const res = await api.diagnoseLeaf(formData);
       if (res.success && res.data) {
         setDiagnosisResult(res.data);
-        showToast("🌿 Leaf scan completed!", "success");
+        showToast(
+          scanMode === "flower_identify" || res.data.category === "flower"
+            ? "🌸 Flower & companion screening completed!"
+            : "🌿 Leaf health scan completed!",
+          "success"
+        );
         if (selectedPlantId) {
           refreshPlants();
         }
@@ -112,31 +120,70 @@ export default function PlantHealthScanner() {
     <div className="max-w-5xl mx-auto py-8 px-4 sm:px-6 space-y-8">
       
       {/* Header */}
-      <div className="space-y-2 pb-6 border-b border-[#E4E0CE]">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#DCE8D9] text-[#245B45] text-xs font-semibold">
-          <Activity className="w-3.5 h-3.5" />
-          <span>PlantVillage ViT Leaf Vision</span>
+      <div className="space-y-4 pb-6 border-b border-[#E4E0CE]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#DCE8D9] text-[#245B45] text-xs font-semibold">
+              <Activity className="w-3.5 h-3.5" />
+              <span>Plant & Flower Vision AI</span>
+            </div>
+            <h1 className="text-3xl font-bold font-serif-heading text-[#245B45]">
+              {scanMode === "flower_identify" ? "Flower & Companion Identifier" : "Plant Leaf Health Scanner"}
+            </h1>
+            <p className="text-xs sm:text-sm text-[#26352C]/75 max-w-2xl leading-relaxed">
+              {scanMode === "flower_identify"
+                ? "Upload a photo of a flower blossom, bloom head, or companion herb. Identifies species and delivers bloom cycles, deadheading advice, and pest-deterrent pairing."
+                : "Upload a clear photo of a single crop leaf. Screens for 38 disease conditions across 14 fruit, vegetable, and berry varieties using PlantVillage ViT."}
+            </p>
+          </div>
+
+          {/* Dual-Mode Switcher */}
+          <div className="flex items-center p-1 bg-[#EAE6D8]/80 rounded-2xl shrink-0 border border-[#DDD8C6]">
+            <button
+              type="button"
+              onClick={() => { setScanMode("leaf_health"); setDiagnosisResult(null); }}
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                scanMode === "leaf_health"
+                  ? "bg-[#245B45] text-white shadow-xs"
+                  : "text-[#26352C]/70 hover:text-[#245B45]"
+              }`}
+            >
+              <Leaf className="w-3.5 h-3.5" />
+              <span>Leaf Disease (38)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setScanMode("flower_identify"); setDiagnosisResult(null); }}
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                scanMode === "flower_identify"
+                  ? "bg-[#245B45] text-white shadow-xs"
+                  : "text-[#26352C]/70 hover:text-[#245B45]"
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>🌸 Flower / Herb</span>
+            </button>
+          </div>
         </div>
-        <h1 className="text-3xl font-bold font-serif-heading text-[#245B45]">
-          Plant Leaf Health Scanner
-        </h1>
-        <p className="text-xs sm:text-sm text-[#26352C]/75 max-w-2xl leading-relaxed">
-          Upload a clear photograph of a single plant leaf. The <strong>PlantVillage ViT</strong> vision model 
-          screens for 38 conditions across 14 fruit, vegetable, and berry crops.
-        </p>
       </div>
 
-      {/* Model Scope & Ethical Guardrail Callout */}
+      {/* Model Scope & Varieties Callout */}
       <div className="p-4 rounded-2xl bg-[#FCFBF7] border border-[#E4E0CE] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-[#26352C]/80">
         <div className="flex items-center gap-2.5">
           <ShieldCheck className="w-5 h-5 text-[#245B45] shrink-0" />
           <div>
-            <span className="font-bold text-[#245B45]">Supported Crops: </span>
-            <span>Tomato, Pepper, Potato, Strawberry, Apple, Grape, Cherry, Corn, Citrus, Peach, Raspberry, Blueberry, Squash, Soybean.</span>
+            <span className="font-bold text-[#245B45]">
+              {scanMode === "flower_identify" ? "Supported Flowers & Herbs: " : "Supported Crops: "}
+            </span>
+            <span>
+              {scanMode === "flower_identify"
+                ? "Marigold, Rose, Sunflower, Petunia, Hibiscus, Daisy, Zinnia, Dahlia, Jasmine, Orchid, Bougainvillea, Alyssum, Lavender, Basil, Mint, Rosemary, Thyme."
+                : "Tomato, Pepper, Potato, Strawberry, Apple, Grape, Cherry, Corn, Citrus, Peach, Raspberry, Blueberry, Squash, Soybean."}
+            </span>
           </div>
         </div>
         <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-[#DCE8D9] text-[#245B45] shrink-0">
-          38 Classes
+          {scanMode === "flower_identify" ? "20+ Varieties" : "38 Classes"}
         </span>
       </div>
 
@@ -227,7 +274,12 @@ export default function PlantHealthScanner() {
                 {scanning ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin text-[#DCE8D9]" />
-                    <span>Analyzing Leaf Pixels...</span>
+                    <span>Analyzing Image Pixels...</span>
+                  </>
+                ) : scanMode === "flower_identify" ? (
+                  <>
+                    <Sparkles className="w-4 h-4 text-[#DCE8D9]" />
+                    <span>🌸 Identify Flower & Bloom Care</span>
                   </>
                 ) : (
                   <>
@@ -285,7 +337,9 @@ export default function PlantHealthScanner() {
               <div className="flex items-start justify-between pb-4 border-b border-[#EAE6D8]">
                 <div className="space-y-1">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#6F9477]">
-                    Screening Result
+                    {diagnosisResult.category === "flower" || scanMode === "flower_identify"
+                      ? "🌸 Flower & Companion Identification"
+                      : "🌿 Leaf Screening Assessment"}
                   </span>
                   <h3 className="text-xl font-bold font-serif-heading text-[#245B45]">
                     {diagnosisResult.crop} • {diagnosisResult.disease}
@@ -293,17 +347,23 @@ export default function PlantHealthScanner() {
                 </div>
 
                 <div className={`px-3 py-1 rounded-full text-xs font-bold ${
-                  diagnosisResult.isHealthy 
+                  diagnosisResult.category === "flower"
+                    ? "bg-rose-100 text-rose-900 border border-rose-200"
+                    : diagnosisResult.isHealthy 
                     ? "bg-emerald-100 text-emerald-800" 
                     : "bg-amber-100 text-amber-900"
                 }`}>
-                  {diagnosisResult.isHealthy ? "Healthy Leaf" : "Needs Attention"}
+                  {diagnosisResult.category === "flower" 
+                    ? "Active Bloom & Flora" 
+                    : diagnosisResult.isHealthy ? "Healthy Leaf" : "Needs Attention"}
                 </div>
               </div>
 
               {diagnosisResult.isSimulatedFallback && (
                 <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center justify-between gap-2">
-                  <span className="font-semibold">🌿 Offline / Rule-Engine Fallback Active</span>
+                  <span className="font-semibold">
+                    {diagnosisResult.category === "flower" ? "🌸 Botanical Knowledge Engine Active" : "🌿 Offline / Rule-Engine Fallback Active"}
+                  </span>
                   <span className="text-[11px] opacity-80">{diagnosisResult.modelAttribution}</span>
                 </div>
               )}
@@ -319,9 +379,9 @@ export default function PlantHealthScanner() {
                   </span>
                 </div>
                 <div className="p-3 bg-[#FCFBF7] rounded-xl border border-[#E4E0CE]">
-                  <span className="text-[11px] text-[#26352C]/60 block">ViT Model Engine</span>
+                  <span className="text-[11px] text-[#26352C]/60 block">AI Vision Engine</span>
                   <span className="font-bold text-xs text-[#245B45] truncate block">
-                    PlantVillage ViT
+                    {diagnosisResult.category === "flower" ? "GrowMate Botanical Flora" : "PlantVillage ViT"}
                   </span>
                 </div>
               </div>
@@ -329,7 +389,7 @@ export default function PlantHealthScanner() {
               {/* Plain Language Explanation */}
               <div className="space-y-2">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-[#245B45]">
-                  Plain Language Assessment
+                  {diagnosisResult.category === "flower" ? "Botanical Assessment & Role" : "Plain Language Assessment"}
                 </h4>
                 <p className="text-xs text-[#26352C]/85 leading-relaxed bg-[#F6F4EC] p-4 rounded-xl border border-[#EAE6D8]">
                   {diagnosisResult.plainExplanation}
@@ -339,7 +399,7 @@ export default function PlantHealthScanner() {
               {/* Cautious Next Steps */}
               <div className="space-y-3">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-[#245B45]">
-                  Cautious Horticultural Steps
+                  {diagnosisResult.category === "flower" ? "🌸 Bloom & Companion Care Steps" : "Cautious Horticultural Steps"}
                 </h4>
                 <div className="space-y-2">
                   {diagnosisResult.cautiousNextSteps?.map((step, idx) => (
